@@ -1,0 +1,41 @@
+name: Scrape versebyversequran.com with HTTrack
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'  # Every Sunday at midnight UTC
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install HTTrack
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y httrack
+
+      - name: Scrape website
+        run: |
+          mkdir -p scraped-site
+          httrack "https://www.versebyversequran.com/" \
+            -O "./scraped-site" \
+            -v \
+            -%e0 \
+            -r5 \
+            -c3 \
+            -s0 \
+            -%P \
+            -N0
+
+      - name: Upload scraped site as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: versebyversequran-site
+          path: scraped-site/
+          retention-days: 90

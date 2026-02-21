@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up Git LFS
+        run: git lfs install
 
       - name: Download zip
         run: |
@@ -34,3 +39,4 @@ jobs:
             git commit -m "Add Alafasy 128kbps Quran audio zip and extracted files"
             git push
           fi
+          

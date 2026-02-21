@@ -1,4 +1,4 @@
-name: Scrape versebyversequran.com with HTTrack
+name: Scrape everyayah.com Alafasy MP3s with HTTrack
 
 on:
   workflow_dispatch:
@@ -23,19 +23,21 @@ jobs:
       - name: Scrape website
         run: |
           mkdir -p scraped-site
-          httrack "https://www.versebyversequran.com/" \
+          httrack "https://everyayah.com/data/Alafasy_128kbps/" \
             -O "./scraped-site" \
             -v \
             -%e0 \
-            -r5 \
-            -c3 \
+            -r0 \
+            -c8 \
+            --robots=0 \
             -s0 \
             -%P \
-            -N0
+            -N0 \
+            "+*.mp3"
 
       - name: Upload scraped site as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: versebyversequran-site
+          name: everyayah-alafasy-128kbps
           path: scraped-site/
           retention-days: 90
